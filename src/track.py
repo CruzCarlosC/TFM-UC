@@ -4,20 +4,23 @@ import matplotlib.pyplot as plt
 #Define track class
 class Track():
     def __init__(self):
-        self.phi = np.pi/2 #np.random.uniform(0,np.pi)
-        self.eta = 2 #np.around(np.random.uniform(0,2), decimals=3)
-        self.q=-1.6e-19  #np.random.choice([1,-1])
-        self.B=4
-        self.m=1.5e-31
-        self.v_0=0.3e5
-        self.gam=1/(np.sqrt(1- (self.v_0**2 / 3e8**2) ))
-        self.wB=self.q* self.B / (self.m * 3e8) *self.gam
+	    self.phi = np.pi/2 #np.random.uniform(0,np.pi)
+	    self.eta = 2 #pseudorapidity
+	    self.k=0.29979 #GeV/(cTm
+	    self.q=-1 #negative or positive factor of e=1.6e-19
+	    self.beta=0.8 #units of c
+	    self.gama=1/(np.sqrt(1-self.beta**2))
+	    self.pt=10 #GeV/c
+	    self.B=4 #T
+	    self.m=0.5e-3 #GeV/c**2
+	    self.r=self.pt/(self.k*self.q*self.B)
+	    self.w=self.k*self.q*self.B/(self.gama*self.m)
 
     def motion(self,t):
         #t=np.linspace(0,2e-4,100)
-        x=self.v_0/self.wB * (np.cos(self.wB*t - self.phi) - np.cos(self.phi))
-        y=self.v_0/self.wB * (np.sin(self.wB*t - self.phi) + np.sin(self.phi))
-        z=np.sinh(self.eta)*t*self.v_0/(self.m * self.gam)
+        x=self.r * (np.cos(self.w*t - self.phi) - np.cos(self.phi))
+        y=self.r * (np.sin(self.w*t - self.phi) + np.sin(self.phi))
+        z=np.sinh(self.eta)*t*self.pt/(self.m * self.gama)
         return (np.array([x,y,z]))
     
     def update_motion(self):
@@ -45,6 +48,6 @@ class Track():
         plt.ylabel('y')
         plt.title('Motion of a charged particle in a magnetic field')
         plt.show()
-        
+ 
 if __name__ == "__main__":
     print("Track class")
