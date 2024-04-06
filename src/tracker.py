@@ -7,12 +7,13 @@ class Tracker():
         self.sides = sides
         self.radi = radi
 
-    def polygon_points(self,r):
+    def polygon_points(self):
         #generate n points on a circle
         theta = np.linspace(0, 2*np.pi, self.sides+1)
-        x = r*np.cos(theta)
-        y = r*np.sin(theta)
-        return (np.array([x,y]))
+        x = self.radi*np.cos(theta)
+        y = self.radi*np.sin(theta)
+        return (x,y)
+        #return (np.array([x,y]))
 
     def line(self,x1,y1,x2,y2):
         #slope
@@ -28,28 +29,30 @@ class Tracker():
         f=a*t+b
         plt.plot(t,f,color='black')
 
-    def plot_polygon(self,r):
-        x,y=self.polygon_points(r)
+    def plot_polygon(self):
+        x,y=self.polygon_points()
         for i in range(self.sides):
             self.plot_line(x[i],y[i],x[i+1],y[i+1])
-
-    def layers(self):
-        for i in self.radi:
-            self.plot_polygon(i)
-
-    def intersection(self,x_0,y_0,r):
-        x,y=self.polygon_points(r)
+    
+    def plane_points(self):
+        x,y=self.polygon_points()
+        cut=[]
         for i in range(self.sides):
-            a,b=self.line(x[i],y[i],x[i+1],y[i+1])
-            f=a*x_0+b
-            if (np.around(y_0,decimals=1) == np.around(f,decimals=1)):
-                plt.plot(x_0,y_0,"g+", markersize=18)
-                #break
-                #print(x_0,y_0)
+            p1=np.array([x[i],y[i],1])
+            p2=np.array([x[i+1],y[i+1],3])
+            p3=np.array([x[i],y[i],3])
+            #Normal vector
+            c=np.cross(p2-p1,p3-p1)
+            k=(c[0]*p1[0]+c[1]*p1[1]+c[2]*p1[2])*-1
+            cut.append([c,k])
+        return cut
 
-    def int_layers(self,x_0,y_0):
-        for i in self.radi:
-            self.intersection(x_0,y_0,i)
+
 
 if __name__ == "__main__":
-	print("Tracker class")
+    print("Tracker class")
+    #Create object
+    track = Tracker(6,5)
+    #Plot polygon
+    track.plot_polygon()
+    plt.show()
