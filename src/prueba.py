@@ -19,8 +19,10 @@ t2.plot_polygon()
 track.transverse_plot()
 
 for i in range(len(a1)):
-    plt.plot(a1[i][0],a1[i][1],"rx", label='Intersection')
+    plt.plot(a1[i][0],a1[i][1],"rx")
 
 for i in range(len(a2)):
-    plt.plot(a2[i][0],a2[i][1],"rx", label='Intersection')
+    plt.plot(a2[i][0],a2[i][1],"rx")
+plt.plot(0,0,"go", label='Origin')
+plt.legend()
 plt.show()
