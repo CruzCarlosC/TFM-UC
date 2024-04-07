@@ -36,7 +36,7 @@ class Tracker():
     
     def plane_points(self):
         x,y=self.polygon_points()
-        cut=[]
+        plane=[]
         for i in range(self.sides):
             p1=np.array([x[i],y[i],1])
             p2=np.array([x[i+1],y[i+1],3])
@@ -44,15 +44,38 @@ class Tracker():
             #Normal vector
             c=np.cross(p2-p1,p3-p1)
             k=(c[0]*p1[0]+c[1]*p1[1]+c[2]*p1[2])*-1
-            cut.append([c,k])
-        return cut
+            #Add k to the normal vector
+            c=np.append(c,k)
+            plane.append(c)
+        return plane
 
+    def plot_plane(self):
+        x,y=self.polygon_points()
+        plane=self.plane_points()
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        color=['blue','red','green','yellow','purple','orange']
+        for i in range(self.sides):
+            xs=np.linspace(-25,25,100)
+            zs=np.linspace(-25,25,100)
+            X, Z = np.meshgrid(xs, zs)
+            Y = (plane[i][3] - plane[i][0]*X)/plane[i][1]
+            ax.plot_surface(X, Y, Z, color=color[i])
+            ax.set_xlabel('x')
+            ax.set_ylabel('y')
+            ax.set_zlabel('z')
+        plt.show()
+
+    def intersection(self,x,y,z):
+        plane=self.plane_points()
+        cut=[]
+        for i in range(self.sides):
+            for j in range(x.size):
+                if int(plane[i][0]*x[j]+ plane[i][1]*y[j]+ plane[i][2]*z[j] + plane[i][3]) == 0:
+                    cut.append([x[j],y[j],z[j]])
+                    break
+        return cut
 
 
 if __name__ == "__main__":
     print("Tracker class")
-    #Create object
-    track = Tracker(6,5)
-    #Plot polygon
-    track.plot_polygon()
-    plt.show()
