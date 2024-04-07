@@ -39,7 +39,16 @@ class Track():
         plt.xlabel('x')
         plt.ylabel('y')
         plt.title('Transverse plane')
-        plt.show()
+        #plt.show()
+    
+    def zy_plot(self):
+        t=np.linspace(-10,10,100)
+        x,y,z=self.eq_motion(t)
+        plt.plot(z,y)
+        plt.xlabel('z')
+        plt.ylabel('y')
+        plt.title('Z-Y plane')
+        #plt.show()
     
     def plot3d(self):
         t=np.linspace(-10,10,100)
@@ -51,6 +60,7 @@ class Track():
         ax.set_ylabel('y')
         ax.set_zlabel('z')
         ax.legend()
+        plt.show()
 
 
  
