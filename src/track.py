@@ -33,7 +33,7 @@ class Track():
         return (x,y,z)
 
     def transverse_plot(self):
-        t=np.linspace(-10,10,100)
+        t=np.linspace(0,10,100)
         x,y,z=self.eq_motion(t)
         plt.plot(x,y)
         plt.xlabel('x')
