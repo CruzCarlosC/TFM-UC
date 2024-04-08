@@ -7,22 +7,18 @@ from tracker import Tracker
 track=Track()
 x,y,z=track.eq_motion(np.linspace(0,10,100))
 
-#Detector
-t1=Tracker(10,5)
-t2=Tracker(10,7)
+t1=Tracker(20,5)
 
-a1=t1.intersection(x,y,z)
-a2=t2.intersection(x,y,z)
+for i in range(x.size):
+    if t1.inter_2(x[i],y[i],z[i])!=None:
+        print(t1.inter_2(x[i],y[i],z[i]))
+        break
+
+
+
+
 
 t1.plot_polygon()
-t2.plot_polygon()
-track.transverse_plot()
+plt.plot(x,y, color='blue')
 
-for i in range(len(a1)):
-    plt.plot(a1[i][0],a1[i][1],"rx")
-
-for i in range(len(a2)):
-    plt.plot(a2[i][0],a2[i][1],"rx")
-plt.plot(0,0,"go", label='Origin')
-plt.legend()
 plt.show()

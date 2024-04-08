@@ -13,7 +13,6 @@ class Tracker():
         x = self.radi*np.cos(theta)
         y = self.radi*np.sin(theta)
         return (x,y)
-        #return (np.array([x,y]))
 
     def line(self,x1,y1,x2,y2):
         #slope
@@ -54,19 +53,23 @@ class Tracker():
         plane=self.plane_points()
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
-        color=['blue','red','green','yellow','purple','orange']
+        #color=['blue','red','green','yellow','purple','orange']
         for i in range(self.sides):
             xs=np.linspace(-25,25,100)
             zs=np.linspace(-25,25,100)
             X, Z = np.meshgrid(xs, zs)
             Y = (plane[i][3] - plane[i][0]*X)/plane[i][1]
-            ax.plot_surface(X, Y, Z, color=color[i])
+            ax.plot_surface(X, Y, Z, color='blue')
             ax.set_xlabel('x')
             ax.set_ylabel('y')
             ax.set_zlabel('z')
         plt.show()
 
     def intersection(self,x,y,z):
+        """
+        Intersection of the plane with the particle track
+        Busca en cada plano del poligono si hay interseccion con la trayectoria de la particula
+        """
         plane=self.plane_points()
         cut=[]
         for i in range(self.sides):
@@ -75,6 +78,15 @@ class Tracker():
                     cut.append([x[j],y[j],z[j]])
                     break
         return cut
+
+    def inter_2(self,x,y,z):
+        """
+        Interseccion de un punto con el poligono
+        """
+        plane=self.plane_points()
+        for i in range(self.sides):
+            if int(plane[i][0]*x+ plane[i][1]*y+ plane[i][2]*z + plane[i][3]) == 0:
+                return i
 
 
 if __name__ == "__main__":

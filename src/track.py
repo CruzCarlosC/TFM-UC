@@ -19,8 +19,8 @@ class Track():
         self.B=3.88 #T
         self.r=self.pt/(self.k*self.q*self.B)
         self.w=self.k*self.q*self.B/(self.gama*self.m)
-        self.x0=1
-        self.y0=2
+        self.x0=0
+        self.y0=0
         self.z0=0
 
     def eq_motion(self,t):
