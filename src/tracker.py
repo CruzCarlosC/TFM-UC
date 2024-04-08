@@ -86,7 +86,7 @@ class Tracker():
         plane=self.plane_points()
         for i in range(self.sides):
             if int(plane[i][0]*x+ plane[i][1]*y+ plane[i][2]*z + plane[i][3]) == 0:
-                return i
+                return (i,x,y,z)
 
 
 if __name__ == "__main__":
