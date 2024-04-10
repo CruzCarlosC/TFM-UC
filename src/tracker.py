@@ -8,7 +8,9 @@ class Tracker():
         self.radi = radi
 
     def polygon_points(self):
-        #generate n points on a circle
+        """
+        Puntos de poligono
+        """
         theta = np.linspace(0, 2*np.pi, self.sides+1)
         x = self.radi*np.cos(theta)
         y = self.radi*np.sin(theta)
