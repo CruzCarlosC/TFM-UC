@@ -23,6 +23,21 @@ class Track():
         self.y0=y0
         self.z0=z0
 
+    def poca(self):
+        """
+        Punto de aproximación más cercano
+        """
+        den=(self.y0 - (self.r)*(np.cos(self.phi)))
+        if den == 0:
+            print("no solution")
+
+        num=(self.x0 + (self.r)*(np.sin(self.phi)))
+        t_poca=(self.phi + np.arctan2(num,den)) / self.w
+
+        x_poca=self.x0+(self.r)*(np.sin(self.w*t_poca-self.phi)+np.sin(self.phi))
+        y_poca=self.y0+(self.r)*(np.cos(self.w*t_poca-self.phi)-np.cos(self.phi))
+        z_poca=self.z0+(self.pt/(self.gamma*self.m))*np.sinh(self.eta)*t_poca
+    
     def eq_motion(self,t):
         """
         Puntos de la trayectoria de la partícula cargada en un campo magnético
