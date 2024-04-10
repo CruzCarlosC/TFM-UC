@@ -3,15 +3,17 @@ import matplotlib.pyplot as plt
 from track import Track
 from tracker import Tracker
 
+
+
 #Particle track
 track=Track()
 x,y,z=track.eq_motion(np.linspace(0,10,100))
 
-t1=Tracker(6,2)
-t2=Tracker(8,3)
-t3=Tracker(12,5)
-t4=Tracker(18,7)
-t5=Tracker(20,9)
+t1=Tracker(10,4.4)
+t2=Tracker(10,7.3)
+t3=Tracker(10,10.2)
+t4=Tracker(8,20)
+t5=Tracker(8,30)
 
 t=[t1,t2,t3,t4,t5]
 
@@ -22,6 +24,8 @@ for j in t:
             p,x1,x2,x3=j.inter_2(x[i],y[i],z[i])
             pl.append([x1,x2,x3])
             break
+
+print(pl)
 
 
 t1.plot_polygon()
@@ -35,4 +39,6 @@ for i in pl:
 plt.title("Transverse Plane")
 plt.xlabel("x")
 plt.ylabel("y")
+plt.xlim(-30,30)
+plt.ylim(-30,30)
 plt.show()

@@ -3,25 +3,25 @@ import matplotlib.pyplot as plt
 
 #Define track class
 class Track():
-    def __init__(self):
+    def __init__(self,phi=np.pi/2,eta=1.5,q=-1,pt=50,pz=20,x0=1,y0=1,z0=0):
         """
         Definir constantes y variables
         """
-        self.phi = np.pi/2 #np.random.uniform(0,np.pi)
-        self.eta = 1.5 #pseudorapidity
+        self.phi = phi #initial phase
+        self.eta = eta #pseudorapidity
         self.k=0.29979 #GeV/(cTm)
-        self.q=-1 #negative or positive factor of e
-        self.pt=50 #GeV/c
-        self.pz=20 #GeV/c
+        self.q=q #negative or positive factor of e
+        self.pt=pt #GeV/c
+        self.pz=pz #GeV/c
         self.m=0.106 #GeV/c**2
         self.beta= np.sqrt(self.pt**2 + self.pz**2)/np.sqrt(self.pt**2 + self.pz**2 + self.m**2)
         self.gama=1/(np.sqrt(1-self.beta**2))
         self.B=3.88 #T
         self.r=self.pt/(self.k*self.q*self.B)
         self.w=self.k*self.q*self.B/(self.gama*self.m)
-        self.x0=0
-        self.y0=0
-        self.z0=0
+        self.x0=x0
+        self.y0=y0
+        self.z0=z0
 
     def eq_motion(self,t):
         """
