@@ -60,8 +60,8 @@ class Track():
         #z=self.z0 + self.pt*np.sinh(self.eta)*t/(self.m * self.gama)
         return (x,y,z)
 
-    def transverse_plot(self):
-        t=np.linspace(0,10,100)
+    def transverse_plot(self,t):
+        #t=np.linspace(0,10,100)
         x,y,z=self.eq_motion(t)
         plt.plot(x,y)
         plt.xlabel('x')
@@ -79,7 +79,8 @@ class Track():
         #plt.show()
     
     def plot3d(self):
-        t=np.linspace(-10,10,100)
+        xp,yp,zp,phi_poca,t_poca=self.poca_points()
+        t=np.linspace(t_poca,10,100)
         x,y,z=self.eq_motion(t)
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
@@ -88,9 +89,10 @@ class Track():
         ax.set_ylabel('y')
         ax.set_zlabel('z')
         ax.legend()
-        plt.show()
+        #plt.show()
 
 
  
 if __name__ == "__main__":
     print("Track class")
+ 
