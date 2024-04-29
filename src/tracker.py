@@ -4,40 +4,53 @@ import matplotlib.pyplot as plt
 #Define tracker class
 class Tracker():
     def __init__(self, sides, radi):
+        """
+            La entrada es el numero de lados
+            Y el radio de una circunferencia circunscrita en el poligono
+        """
         self.sides = sides
         self.radi = radi
 
     def polygon_points(self):
         """
-        Puntos de poligono
+            Generar puntos del poligono
+            Array
         """
         theta = np.linspace(0, 2*np.pi, self.sides+1)
         x = self.radi*np.cos(theta)
         y = self.radi*np.sin(theta)
-        return (x,y)
+        return (np.round(x,3),np.round(y,3))
 
     def line(self,x1,y1,x2,y2):
         """
-        Ecuacion de una recta
+            Calcular parametros de una recta
+            Pendiente y ordenada
+            Dados dos puntos
         """
         #slope
-        m=(y2-y1)/(x2-x1)
+        if x2-x1 == 0:
+            m=0
+        else:
+            m=(y2-y1)/(x2-x1)
         #y-intercept
         b=y1-m*x1
-        return (m,b)
+        return (np.round(m,3),np.round(b,3))
 
     def plot_line(self,x1,y1,x2,y2):
         """
-        Grafica una linea
+            Graficar una recta dados dos puntos
         """
         a,b=self.line(x1,y1,x2,y2)
-        t=np.linspace(x1,x2,50)
-        f=a*t+b
-        plt.plot(t,f,color='black')
+        if x2-x1 == 0:
+            plt.plot(x1*np.ones(100),np.linspace(y1,y2,100),color="black")
+        else:
+            t=np.linspace(x1,x2,50)
+            f=a*t+b
+            plt.plot(t,f,color='black')
 
     def plot_polygon(self):
         """
-        Graficar el poligono
+            Graficar el poligono
         """
         x,y=self.polygon_points()
         for i in range(self.sides):
@@ -45,7 +58,7 @@ class Tracker():
     
     def plane(self,x1,y1,x2,y2):
         """
-        Ecuacion del plano
+            Ecuacion del plano
         """
         #vector normal
         c=np.cross(np.array([x2-x1,y2-y1,2]),np.array([0,0,2]))
@@ -55,9 +68,9 @@ class Tracker():
     
     def plane_points(self):
         """
-        Ecuacion de los planos
-        ax+by+cz+k=0
-        c[0]*x+c[1]*y+c[2]*z+c[3]=0
+            Ecuacion de los planos
+            ax+by+cz+k=0
+            c[0]*x+c[1]*y+c[2]*z+c[3]=0
         """
         x,y=self.polygon_points()
         plane=[]
@@ -75,7 +88,7 @@ class Tracker():
 
     def plot_plane(self):
         """
-        Graficar los planos
+            Graficar los planos
         """
         x,y=self.polygon_points()
         plane=self.plane_points()
@@ -92,10 +105,12 @@ class Tracker():
             ax.set_zlabel('z')
         plt.show()
 
-    def inter(self,x,y):#,x,y,z):
+    def inter(self,x,y):
         """
-        Prueba interseccion de un punto con el poligono
+            Prueba interseccion de un punto con el poligono
         """
+        
+        #Puntos del poligono
         px,py=self.polygon_points()
 
         cx=[]
@@ -110,18 +125,15 @@ class Tracker():
                 cy.append(i)
         c=-1
         if cx and cy:
-            for i in range(len(cx)):
-                if cx[i]==cy[i]:
-                    c=cx[i]
-                    #plt.plot(x,y,'rx')
+            for i in cx:
+                for j in cy:
+                    if i==j:
+                        c=i
+                        break
         if c>=0:
             plan,k=self.plane(px[c],py[c],px[c+1],py[c+1])
             if int(plan[0]*x+plan[1]*y+plan[2]*1+k)==0:
                 return (x,y)
-
-
-
-
 
 
 if __name__ == "__main__":
