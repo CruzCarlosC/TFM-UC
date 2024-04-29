@@ -1,17 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
-#Equation of motion
-def eq_motion(t):
-    x=0 + 5 * (np.sin(t - np.pi/2) + np.sin(np.pi/2))
-    y=0 + 5 * (np.cos(t - np.pi/2) - np.cos(np.pi/2))
-    z=0 + 3 * t
-    return (x,y,z)
+from track import Track
+from tracker import Tracker
 
 #Kalman filter
 def kalman_filter(x,y,z):
     """
-    Kalman filter
+        Kalman filter
     """
     #Initial conditions
     x0=np.array([x[0],y[0],z[0],0,0,0])
@@ -46,19 +41,44 @@ def kalman_filter(x,y,z):
         x_hat_list.append(x_hat)
     return np.array(x_hat_list)
 
+
 #Particle track
-xt,yt,zt=eq_motion(np.linspace(0,10,100))
-x,y,z=eq_motion(np.linspace(0,10,10))
-x1,y1,z1=eq_motion(np.linspace(0,10,30))
-x_hat=kalman_filter(x,y,z)
-x_hat1=kalman_filter(x1,y1,z1)
+track=Track(x0=0.5,y0=0.5, phi=np.pi/2)
+x,y,z=track.eq_motion(np.linspace(0,10,100))
+
+#Tracker layers
+n=10
+t,l=[],[]
+for i in range(n):
+    t.append(Tracker(12,1+i*0.5))
+    l.append([[],[],[]])
+
+
+for i in range(x.size):
+    #Bucle sobre los poligonos  
+    for j in range(len(t)):
+        if t[j].inter(x[i],y[i])!=None:
+            x0,y0=t[j].inter(x[i],y[i])
+            l[j][0].append(x0)
+            l[j][1].append(y0)
+            l[j][2].append(z[i])
+
+#Promedios de todos los puntos que cumplen la condicion de interseccion
+a,b,c=[],[],[]
+for i in range(len(l)):
+    a.append(np.mean(np.array(l[i][0])))
+    b.append(np.mean(np.array(l[i][1])))
+    c.append(np.mean(np.array(l[i][2])))
+
+
+x_hat=kalman_filter(np.array(a),np.array(b),np.array(c))
 
 #Plot
 fig=plt.figure()
 ax=fig.add_subplot(111,projection='3d')
-ax.plot(xt,yt,zt,label='True', color="blue")
-ax.plot(x_hat[:,0],x_hat[:,1],x_hat[:,2],label='Kalman 10 points', color="red")
-ax.plot(x_hat1[:,0],x_hat1[:,1],x_hat1[:,2],color="orange",label='Kalman 30 points')
+ax.plot(x,y,z,label='True')
+ax.scatter(a,b,c,label='Tracker',color='red')
+ax.scatter(x_hat[:,0],x_hat[:,1],x_hat[:,2],label='Kalman', color='green', linestyle='dashed')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('z')
