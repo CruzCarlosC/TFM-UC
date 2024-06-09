@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from track2 import Track
-from tracker2 import Tracker
+from track import Track
+from tracker import Tracker
 import os
 import csv
 
