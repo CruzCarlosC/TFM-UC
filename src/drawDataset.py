@@ -12,12 +12,12 @@ def drawGraph(dataset, ax):
     ax.plot(x[:,0].numpy(), x[:,1].numpy(), 'g*')
     edge_index = dataset['source', 'weight', 'target'].edge_index
     edge_label = dataset['source', 'weight', 'target'].edge_label
-    edge_label_index = dataset['source', 'weight', 'target'].edge_label_index
+    #edge_label_index = dataset['source', 'weight', 'target'].edge_label_index
     print(edge_index.shape)
     print(edge_label.shape)
-    print(edge_label_index.shape)
+    #print(edge_label_index.shape)
 
-    for i, edge in enumerate(torch.t(edge_label_index)):
+    for i, edge in enumerate(torch.t(edge_index)):
         edge1 = edge[0].numpy()
         edge2 = edge[1].numpy()
         if edge_label[i] > 0.75:
